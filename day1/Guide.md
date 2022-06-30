@@ -1,6 +1,6 @@
 # Daily guide : day 1 🥚
 
-Welcome into the first day of the Motoko Bootcamp ! <br/>
+Welcome into the first day of the Motoko training ! <br/>
 This guide is meant to cover some basics on : **Actor**, **function**, **types**,**variables**, **loops** and **modules**.
 
 # Prerequisites ✅
