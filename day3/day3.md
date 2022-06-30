@@ -1,14 +1,7 @@
-# Daily guide : day 5 🦆
+# Daily guide : day 3 🐥
 
-Welcome into the **day 5** of the Motoko Bootcamp ! <br/>
-Today we will cover the following topics : **Principal**, **Hashmap**, **Cycles** (how to deal with upgrades) & **stable variables**.
-
-You can access the official documentation for each topic.
-
-- <a href="https://smartcontracts.org/docs/language-guide/caller-id.html" target="_blank"> Principal </a>.
-- <a href="https://smartcontracts.org/docs/base-libraries/HashMap.html" target="_blank"> Hashmap </a>.
-- <a href="https://smartcontracts.org/docs/language-guide/upgrades.html" target="_blank"> Stable variables & upgrade </a>.
-- <a href="https://smartcontracts.org/docs/developers-guide/concepts/tokens-cycles.html" target="_blank"> Cycles </a>.
+Welcome into the **day 3** of the Motoko Bootcamp ! <br/>
+Today we will cover the following topics : **Array**, **Optional and Generic type**, and **Higher order functions**.
 
 # Prerequisites ✅
 
@@ -18,358 +11,316 @@ You can access the official documentation for each topic.
   dfx --version
   ```
 
-- Before reading this guide I recommend watching those two lectures.
+- Start a new project called **day_3** and turn on your local replica.
 
-  - Create, Read, Upgrade & Delete & Hashmap. (entire lecture)
-  - Cycle managament (TODO : ADD TIME)
+  ```
+  dfx new day_3
+  cd day_3
+  dfx start
+  ```
 
-# Principal 🆔
+# Array 🚚
 
-The notion of **Principal** is specific to the Internet Computer. <br/> A principal is a unique identifier fo all entities on the IC
+Datastructures in any programming language are essential, on almost every program you need to store and access data into datastructures. 💿
 
-- A canister has it's own principal (which corresponds to the canister id)
-- Each user has it's own principal.
-- Your wallet has it's own principal.
+<br/> Data structures come in a lot of differents forms, each one has its own advantages and drawbacks, there is no perfect datastructures (even though some are more used than others), the optimal datastructure for a given task depends on the situtation and on your priorities.
 
-You can access the principal of your dfx identity running the following command.
+We have already played with **Array**, but today we'll see exactly how they are created and many useful functions to use with them.
 
-```
-dfx identity get-principal
-ubetf-42t5l-l64h6-ljrqr-6ztbu-tanvs-jrwiv-a45x4-ucoxp-cqr4i-mqe //My dfx principal
-```
+<p align="center"> <img src="img/array.png" width="400"/> </p>
 
-<p align="center"> <img src="img/plug.png" width="400"/> </p>
-
-Here we also have a principal.
-
-Each message on the IC contains the information about the principal of the caller.
-You can access this information in Motoko with the following syntax.
+An array is a fixed-length data structure, once an array of a specified size is created you cannot increase the capacity expect by creating a completely new array.
+This means that at the time the code will run, it will always **know** what is the size of the array. (This is not the case for all datastructures) <br/>
+Accessing an element in an array is extremely simple, you only need to request the value at a specific index.
 
 ```
-public shared(msg) func whoami() : async Principal {
-    let principal_caller = msg.caller;
-    return(principal_caller);
-};
+let array : [Nat] = [10, 3, 4, 5];
+let a : Nat = array[3]; // 5
 ```
 
-The principal is accessible using msg.caller.
-You can also use this syntax.
+You can access tothe size of an array using **.size()**.
 
 ```
-public shared({caller}) func whoami() : async Principal {
-    return(caller);
-};
+let array : [Nat] = [1, 3 , 4];
+let size : Nat = array.size() // 3
 ```
 
-On the Internet Computer there is a special principal, it's called the **Anonymous** principal.
-The textual version of this principal is **2vxsx-fae**. It corresponds to any user that is not authenticated.
+🕵️ Deeply understanding why accessing an element in an array is so efficient involves explaining how the computer manages memory, this is out of scope for this lesson but I'll try to explain it in simple terms : if we know the size of an array when the code is compiled, we can allocate the exact memory for it, remember the memoy location of the first value in the array and write all other values in the memory locations directly following the location of the first value. <br/> <br/>Then if we want to access any element in the array we just need to look at the location of the first element and eventually jump to the right memory location by taking into account the index of the element we are trying to access.
 
-Finally, in Motoko there is a <a href="https://smartcontracts.org/docs/base-libraries/Principal.html" target="_blank"> **Principal** </a> module for basic operations on principals.
+In Motoko, by default arrays are **immutable** (like variables). This means once the array is created you can only **read** the values inside but cannot **write**.
 
-# Challenge 🎮
-
-Take a break and try completing challenge 1.
-
-# HashMap 🗝
-
-An HashMap is a **key** / **value** store that allow you to store elements of type **value** and later retrieve them using an element of type **key**.
-Usually, we note the type of the keys : **K** & the type of the values : **V**.
-
-You can create an HashMap and use it by importing the **HashMap** module (don't forget the capital M). <br/>
-This is how you would instantiate your first HashMap, with **Keys** of type **Principal** and value of type **Name**.
+You can create **mutable** arrays but you need to use the keyword **var**.
 
 ```
-import HashMap "mo:base/HashMap";
-import Principal "mo:base/Principal";
-actor {
+let array_1 : [Nat] = [1, 2, 3]; // immutable
 
-    let anonymous_principal : Principal = Principal.fromText("2vxsx-fae");
-    let users = HashMap.HashMap<Principal, Text>(0, Principal.equal, Principal.hash);
-    users.put(anonymous_principal, "This is the anonymous principal");
-
-    public func test() : async ?Text {
-        return(users.get(Principal.fromText("2vxsx-fae")));
-    };
-
-
-};
+let array_2: [var Nat] = [1, 2, 3]; // mutable
 ```
 
-There is a lot going on. At this point you're probably not surprised by the Motoko syntax : HashMap.HashMap, it simply means that we import the HashMap object from the HashMap module. <br/>
-
-Then we have three arguments to instantiate the HashMap.
-
-- 0 corresponds to the initial capacity of the HashMap. The capacity will automatically grow for you everytime you reach the maximum capacity of the HashMap, you don't need to worry about it 🥳.
-
-- Principal.equal is needed to compare the Keys.
-
-- Principal.hash is needed to hash the Keys.
-
-If you are not familiar with the concept of **hash** and **hash table**, I recommend watching this <a href="https://www.youtube.com/watch?v=KyUTuwz_b7Q" target="_blank"> video </a>.
-
-I really encourage you to understand the inner working of the HashMap, that way you'll get why we need to provide Principal.equal & Principal.hash.
-
-Let's move to the pratical application.
-You can add values inside the HashMap using the following syntax.
-
 ```
-import HashMap "mo:base/HashMap";
-import Principal "mo:base/Principal";
-actor {
+array_1[1] := 0; // ⛔️ impossible to reassign values of an immutable array.
 
-    let anonymous_principal : Principal = Principal.fromText("2vxsx-fae");
-    let users = HashMap.HashMap<Principal, Text>(0, Principal.equal, Principal.hash);
-    users.put(anonymous_principal, "This is the anonymous principal");
-
-    public func test() : async ?Text {
-        return(users.get(Principal.fromText("2vxsx-fae")));
-    };
-
-};
-```
-
-Here I have added the value **"This is the anonymous principal"** with the **Key** that corresponds to the anonymous principal.
-
-Let's try to retrieve our value.
-
-```
-import HashMap "mo:base/HashMap";
-import Principal "mo:base/Principal";
-actor {
-
-    let anonymous_principal : Principal = Principal.fromText("2vxsx-fae");
-    let users = HashMap.HashMap<Principal, Text>(0, Principal.equal, Principal.hash);
-    users.put(anonymous_principal, "This is the anonymous principal");
-
-    public func test() : async ?Text {
-        return(users.get(Principal.fromText("2vxsx-fae")));
-    };
-
-
-};
-```
-
-Deploying this actor in the Motoko playground and running the test will return :
-
-```
-(opt "This is the anonymous principal")
+array_2[1] := 0; // ✅ valid reassignment in a mutable array.
 ```
 
 # Challenge 🎮
 
-Take a break and try completing challenge 2 to 5.
+Take a break and try completing challenge 1 to 3.
 
-# Cycles 💰
+# Optional type ❓
 
-Every canister on the Internet Computer consumes **cycles**. Those are used to
-measure and pay for **computation** and **storage**. <br/>
+In Motoko there is a special value called **_null_**. <br/>
+This value represents the absence of a result, this is useful if you want one of your function to indicate that it has no specific return value.
+The type of **_null_** is **Null** (this type contains only one value).
 
-This is a table summing up the cost of each common operation in cycles.
-
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Cycles Cost per Transaction (as of July 26, 2021)</caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Transaction</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-right valign-top">All Application Subnets</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Canister Created</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For creating canisters on a subnet</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">100,000,000,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Compute Percent Allocated Per Second</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For each percent of the reserved compute allocation (a scarce resource).</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">100,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Update Message Execution</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For every update message executed</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">590,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ten Update Instructions Execution</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For every 10 instructions executed when executing update type messages</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">4</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Xnet Call</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For every inter-canister call performed (includes the cost for sending the request and receiving the response)</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">260,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Xnet Byte Transmission</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For every byte sent in an inter-canister call (for bytes sent in the request and response)</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">1,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ingress Message Reception</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For every ingress message received</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">1,200,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ingress Byte Reception</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For every byte received in an ingress message</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">2,000</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GB Storage Per Second</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">For storing a GB of data per second</p></td>
-<td class="tableblock halign-right valign-top"><p class="tableblock">127,000</p></td>
-</tr>
-</tbody>
-</table>
-
-Each canister has it's own cycle balance and can transfer cycles to other canisters through messages. <br/>
-In Motoko, you can use the <a href="https://smartcontracts.org/docs/base-libraries/ExperimentalCycles.html" target="_blank"> ExperimentalCycles </a> module to play and experiment with cycles. (This module is likely to be modified in the future).
-
-This is how you can access the balance of a canister.
+Let's say you want to create a function named **_index_of_one_** that takes an array of type **[Nat]** and returns the first index such that the value at that index is equal to 1. <br/> You also want this function to return **_null_** if no matching index was found.
 
 ```
-import Cycles "mo:base/ExperimentalCycles";
 actor {
-
-    public func balance() : async Nat {
-        return(Cycles.balance())
+    public func index_of_one(array : [Nat]) : async Nat {
+        for((number,index) in array.vals()){
+            if(number == 1) {
+                return index;
+            }
+        };
+        return null;
     };
 };
 ```
 
-Each message sent on the IC contains a number of cycles attached to it.
-You can look the available amount with the following code.
+This declaration is not valid because **_null_** is not a type Nat 😕 <br/>
+Trying to deploy this code would result in the following error.
 
 ```
-import Cycles "mo:base/ExperimentalCycles";
-actor {
+type error [M0050], literal of type
+  Null
+does not have expected type
+  Nat
+```
 
-    public func message_available() : async Nat {
-        return(Cycles.available())
+We need a way to explain to Motoko that the value returned can be either a **Nat** or **_null_**. <br/> <br/> Luckily there is a notation exactly for that, it's called the optional type : **?T**. <br/>
+In our case we would use **?Nat** because we are returning **Nat** or **_null_**.
+
+We can rewrite our actor using our new type.
+
+```
+actor {
+    public func index_of_one(array : [Nat]) : async ?Nat {
+        for((number,index) in array.vals()){
+            if(number == 1) {
+                return index;
+            }
+        };
+        return null;
     };
 };
 ```
 
-If you want to make your users pay in cycles to access a functionality, you can do so.
+Sometimes in your code you will need to handle those optional values, you can do so with a **switch** expression.
 
 ```
-import Cycles "mo:base/ExperimentalCycles";
+import Nat "mo:base/Nat";
 actor {
-
-    let AMOUNT_TO_PAY : Nat = 100_000;
-    public func pay_to_access() : async Text {
-        if(Cycles.available() < 100_000) {
-            return("This is not enough, send more cycles.");
-        }:
-        let received = Cycles.accept(AMOUNT_TO_PAY);
-        return("Thanks for paying, you are now a premium user 😎");
+    public func null_or_nat(n : ?Nat) : async Text {
+        switch(n){
+            // Case where n is null
+            case(null) {
+                return ("The argument is null");
+            };
+            // Case where n is a nat
+            case(?something){
+                return ("The argument is : " # Nat.toText(something));
+            };
+        };
     };
 };
 ```
 
-# Challenge
-
-Take a break and try completing challenge 6 & 7.
-
-# Stable variables ✏️
-
-By default, when you upgrade a canister you'll will loose all state. 😢 <br/>
-Let's say we have a variable called **counter** that been previously incremented; the value of this variable will be reset after an upgrade.
+You can deploy this actor and try those commands.
 
 ```
+dfx canister call day_3 null_or_nat '(opt 4)'
+("The argument is : 4")
+```
+
+🕵️ Notice again the difference between Candid and Motoko. <br/>
+Here we have to use the Candid syntax **opt 4** whereas in Motoko we could just write **?4**.
+
+```
+dfx canister call day_3 null_or_nat '(null)'
+("The argument is null")
+```
+
+☢️ It's important to understand that the type **?Nat** and **Nat** are really different. <br/> If a function is expecting a value of type **Nat** as parameter and it receives a value of type **?Nat** it will not appreciate. 😠
+
+Take a loot at something we shouldn't do, we'll use again the same code from the previous example but without the **switch** expression.
+
+```
+import Nat "mo:base/Nat";
 actor {
-
-    var my_name : Text = "";
-
-    public func change_name(name : Text) : async () {
-        ny_name := name;
+    public func null_or_nat(n : ?Nat) : async Text {
+        return ("The argument is : " # Nat.toText(something)); ⛔️ what is the type of something at this point?
     };
-
-    public func show_name() : async Text {
-        return(my_name)
-    };
-
 };
 ```
 
-Here's what you can experiment with this actor (after deployment on the Motoko playground)
+This code will not compile because the function toText is expecting a parameter of type Nat as we can see in the documentation.
+
+<p align="center"> <img src="img/toText.png" width="600"/> </p>
+
+Some functions accept optional types, but not this one. <br/>
+I hope you now appreciate the importance of **switch** / **case**.
+
+# Generic type 👤
+
+I have briefly introduced the concept of generic type when we introduced the optional type with the notation **?T**. Let's dive into it.
+
+The generic type **T** allow us to write more general code, that can work with different types and be reused.
+
+Let's say we want to write a function called **_is_array_size_even_** that returns a **Bool** indicating if the size of the array is even or not.</br>
+We could write something like this
 
 ```
-change_name("Motoko");
-show_name()  // "Motoko"
-```
-
-Now let's try to add something and redeploy our canister, we are trying to run an upgrade.
-
-```
-actor {
-
-    var new_value : Text = "Let's upgrade";
-    var my_name : Text = "";
-
-    public func change_name(name : Text) : async () {
-        my_name := name;
+public func is_array_size_even(array : [Nat]) : async Bool {
+    let size = array.size();
+    if(size % 2 == 0){
+        return true;
+    } else {
+        return false;
     };
-
-    public func show_name() : async Text {
-        return(my_name)
-    };
-
-
 };
 ```
 
+This function is valid, but it only works if our array is filled with **Nat**. What about an array with **Text** values inside ?
+
+- An quick and dirty solution would be to create a lot of different functions for each type of array we want to use : **\_is_array_size_even_nat** **\_is_array_size_even_text** **\_is_array_size_even_char** ...
+  I hope you agree that this solution sucks.
+
+- A better solution is to use the generic notation : **T**. This basically allow us to create **one** generic function that we can reuse for all the types available in Motoko.
+
 ```
-show_name() // ""
-```
-
-Looks like the canister has forgotten his name..
-Fortunately there is a way to keep state accross upgrades in Motoko. <br/> You can do so with **stable variable** !
-
-```
-actor {
-
-    stable var my_name : Text = "";
-
-    public func change_name(name : Text) : async () {
-        my_name := name;
+public func is_array_size_even<T>(array : [T]) : async Bool {
+    let size = array.size();
+    if(size % 2 == 0){
+        return true;
+    } else {
+        return false;
     };
-
-    public func show_name() : async Text {
-        return(my_name)
-    };
-
 };
 ```
 
-If you try the same suite of operations with this actor, you'll notice that the value of the counter is kept accross the upgrade.
+T means "whatever type you want" and [T] means "whatever type you want as long as it's an array".
 
-Unfortunately only some variables/objects can be defined as stable. <br/> An HashMap for instance, cannot be defined as stable. <br/>
-
-In those cases, you need to use the following systems hooks.
+🕵️ Notice the <T> following the name of the function. It means that this function now depends on the type of T. <br/> If you want to use the array_size function you'll need to specify for which type you are going to use it !
 
 ```
- system func preupgrade() {
-    // Do something before upgrade
-  };
+func is_array_size_even<T>(array : [T]) : Bool {
+    let size = array.size();
+    if(size % 2 == 0){
+        return true;
+    } else {
+        return false;
+    };
+};
 
-  system func postupgrade() {
-    // Do something after upgrade
-  };
-}
+let array : [Nat] = [1,2,3,4];
+let bool : Boolean = is_array_size_even<Nat>(array); // I indicate to the compiler which type I'm gonna use the function on.
 ```
 
-The trick is to use the **preupgrade** method to put all data into stable variables, and use to stable variables to reinitialize your canister state.
-
-(For more informations : https://smartcontracts.org/docs/language-guide/upgrades.html)
+We've used T to represent the generic type but you will also see A or B or C being used in the documentation, this doesn't change anything.
 
 # Challenge 🎮
 
-Take a break and try completing challenge 8 to 10.
+Take a break and try completing challenge 4 to 6.
+
+# Higher order functions 🏋️‍♀️
+
+So far, we've only seen functions taking simple arguments (**Nat**, **Text**, **Char**...) but functions can also take other functions as arguments, such functions are called **higher order function**.
+
+The **Array** module contains several higher order function, those are really powerful and useful methods so I'll present some of them.
+
+- <a href="https://smartcontracts.org/docs/base-libraries/Array.html#find" target="_blank"> **Find** </a> : This function takes two parameters [A] an array and **f** a function that takes a value of type A and returns a **Bool**. (f is called a **predicate**).<br/>This function returns the first value for which the **predicate** is **true**.
+
+```
+import Array "mo:base/Array";
+actor {
+    let f = func (n : Nat) : Bool {
+        if (n > 10) {
+            return true
+        } else {
+            return false
+        };
+    };
+
+    public func mystere(array : [Nat]) : async ?Nat {
+        return(Array.find<Nat>(array, f));
+    };
+
+};
+```
+
+🕵️ Notice this code sample makes use of the 3 concepts we've been discussing about : Optional type, Generic type and Higher-order functions. 😎
+
+<details>
+        <summary style="color:green"> 🤔 What do you think <strong> mystere([1,4,5,18,0,2,3]) </strong> will return ? </summary>
+        <br/>    
+        The first value above 10 in the array so <strong> ?18 </strong> (do not forget that the value is of type <strong> ?Nat </strong> because this function might return <strong> <i> null </i> </strong>).
+		<br/><br/>
+    </details>
+	<br/>
+
+- <a href="https://smartcontracts.org/docs/base-libraries/Array.html#filter" target="_blank"> **Filter** </a> : This function also takes an array [A] and a **predicate** f and returns a new array [A] where only values that validate the predicate are kept.
+
+We can even reuse the same predicate as in the previous example. ♻️
+
+```
+import Array "mo:base/Array";
+actor {
+    let f = func (n : Nat) : Bool {
+        if (n > 10) {
+            return true
+        } else {
+            return false
+        };
+    };
+
+    public func surprise(array : [Nat]) : async ?Nat {
+        return(Array.filter<Nat>(array, f));
+    };
+};
+```
+
+<details>
+        <summary style="color:green"> 🤔 What do you think <strong> surprise([1, 23, 4, 25, 12]) </strong> will return ? </summary>
+        <br/>    
+        An array where only values above 10 are kept (the order is not modified) : <strong> [23, 25, 12]</strong>.
+		<br/> <br/>
+    </details>
+	<br/>
+
+- <a href="https://smartcontracts.org/docs/base-libraries/Array.html#fmap" target="_blank"> **Map** </a> : This function (again) takes an array [A] but this time f is a function taking a value of type A and returning a value of type B. This function simply apply the function f to **all** elements in the array and returns the new array.
+
+```
+import Array "mo:base/Array";
+actor {
+    let f = func (n : Nat) : Nat {
+        return(n + 1);
+    };
+
+    public func riddle(array : [Nat]) : async [Nat] {
+        return(Array.map<Nat, Nat>(array, f));
+    };
+};
+```
+
+<details>
+        <summary style="color:green"> 🤔 What do you think <strong> riddle([0, 0, 0, 0]) </strong> will return ? </summary>
+        <br/>    
+        A new array where all values have been increased by one : <strong> [1, 1, 1, 1]</strong>.
+		<br/> <br/>
+    </details>
+	<br/>
+
+# Challenge 🎮
+
+Take a break and try completing challenge 7 to 10.
