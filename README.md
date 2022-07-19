@@ -2,7 +2,7 @@
 
 # Welcome to the Motoko training! 👻
 
-Hello and welcome to all motivated learners. 🧑‍🎓
+Hello and welcome to all students. 🧑‍🎓
 
 
 # Structure of the week 📆
@@ -11,24 +11,12 @@ The training will start on the 19th of July and last until the 28th of July. <br
 
 # Lectures 🎬
 
-Lectures will be held live on Zoom Webinar by mentors.
-Each lecture will cover one specific topic, most of them will focused around Motoko.
-
-Each lecture will be recorded and available on Discord so you can keep up even if you are not available to watch it live.
 
 # Daily guide 📜
 
-For each day of the training, a guide will be provided.
-
-This guide will contains lessons on multiples Computer Science topics, those lessons are **highly recommended** for begginers, many people participating in this bootcamp have no coding experience and no background in Computer Science; if that's your case we believe it's important to acquire this fundamental knowledge. <br/>
-However, don't feel overwhelmed by those topics and make sure to take your time. <br/>
-All ressources will stay available after the bootcamp, the core objective of this week is to familiarize yourself with the Internet Computer. <br/> Even for an experimented developer getting familiar with the Internet Computer and being able to develop on it in just one week is already quite challenging.
 
 # Daily challenges 📝
 
-Coding is all about **practice**! <br/>The more you challenge yourself, the better you'll get. 🧑‍💻
-
-Each day along with the daily guide you will also have a list of 10 challenges related to what you'll learn in the lessons. Solutions to these challenges will be released on the following day at 7am EST.<br/>
 
 # Open mentorship hours 🐥
 
