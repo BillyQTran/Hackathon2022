@@ -16,8 +16,6 @@ Each lecture will cover one specific topic, most of them will focused around Mot
 
 Each lecture will be recorded and available on Discord so you can keep up even if you are not available to watch it live.
 
-Don't stress out about attending all lectures.
-
 # Daily guide 📜
 
 For each day of the training, a guide will be provided.
