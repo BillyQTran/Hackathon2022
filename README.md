@@ -7,12 +7,7 @@ Hello and welcome to all motivated learners. 🧑‍🎓
 
 # Structure of the week 📆
 
-The training will start on the 11th of July and last until the 18th of July. <br/>
-Each student is responsible for their own progression; a student will either be in the "beginner" (No coding experience) track or "intermediate" (Some level of experience) track.
-<br/>
-
-- Be fully enrolled
-- Complete the daily challenges (before the solutions are provided on the following day)
+The training will start on the 19th of July and last until the 28th of July. <br/>
 
 # Lectures 🎬
 
