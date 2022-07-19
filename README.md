@@ -4,17 +4,6 @@
 
 Hello and welcome to all motivated learners. 🧑‍🎓
 
-We believe the Internet Computer is an amazing piece of technology: cryptography, mathematics, computer science, blockchain technology, cloud technology... it's one achievement for mankind to combine so much ingenuity and knowledge into one project. 📚
-
-However the first and most important aspect of the Internet Computer will always be the **community** and the people believing in it. 👦 <br/> <br/>
-Motoko bootcamp is a global event, organized by the community, all Dev Mentors have really different backgrounds but we all have at least one huge interest in common: the **Internet Computer**! ∞
-
-The goal of this bootcamp is to transmit our **knowledge** along with our **passion**.
-
-We all know the world needs to change, and that technology alone won't solve everything, but we also believe that blockchain techology and the Internet Computer will play a major role in shaping the new world. 🌍
-<br/>
-<br/>
-We hope you'll use the knowledge acquired during this week to help us build a fairer and brighter world. 🌈
 
 # Structure of the week 📆
 
