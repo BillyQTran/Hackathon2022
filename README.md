@@ -1,30 +1,22 @@
 # Hackathon2022
 
-# Welcome to the Motoko training! 👻
+# Welcome to the Motoko training and blockchain backend for semi final round! 👻
 
 Hello and welcome to all students. 🧑‍🎓
 
-
-# Structure of the week 📆
+# Structure of the training 📆
 
 The training will start on the 19th of July and last until the 28th of July. <br/>
 
-# Lectures 🎬
+The training contains 6 sessions and specializes on Internet Computer as well as Motoko language.
 
+# Lectures 🎬
+Each lecture will discuss the content of software development on IC by Motoko language. Learners will be guided in theory and then practice on the SDK.
 
 # Daily guide 📜
 
 
 # Daily challenges 📝
-
-
-# Open mentorship hours 🐥
-
-
-# Team meetings (optional) 🫂
-
-
-# Assistance & Ongoing Troubleshooting 📞
 
 
 # Ressources 📚
