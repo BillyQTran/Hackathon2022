@@ -5,7 +5,7 @@ ReactJS
 VueJS
 Angular
 
-# Back-end Blockchain
+# Back-end Blockchain (Motoko)
 # for Windows
 
 # Step 1
@@ -22,3 +22,6 @@ Install Volta
 
 # Step 5
 Install node server
+
+# Step 6
+Install VS Code
