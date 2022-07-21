@@ -3,7 +3,8 @@
 <a href="https://fullstack.edu.vn/" target="_blank"> **HTML, CSS, Javascript** </a> : The documentation for front-end programming.
 ReactJS
 VueJS
-Angular
+AngularJS
+...
 
 # Back-end Blockchain (Motoko)
 # for Windows
