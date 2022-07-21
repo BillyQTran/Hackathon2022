@@ -417,7 +417,7 @@ actor {
     };
 
     public func check_size() : async Nat {
-        returrn(array.size());
+        return(array.size());
     };
 };
 ```
@@ -460,7 +460,7 @@ actor {
 
 ```
 
-This syntax means that we will go trough all values in the array and print them.
+This syntax means that we will go through all values in the array and print them.
 Once you've deployed the actor, run the following command.
 
 ```
