@@ -385,7 +385,7 @@ actor {
 You can deploy this actor and try those commands.
 
 ```
-dfx canister call day_3 null_or_nat '(opt 4)'
+dfx canister call day_2 null_or_nat '(opt 4)'
 ("The argument is : 4")
 ```
 
@@ -393,7 +393,7 @@ dfx canister call day_3 null_or_nat '(opt 4)'
 Here we have to use the Candid syntax **opt 4** whereas in Motoko we could just write **?4**.
 
 ```
-dfx canister call day_3 null_or_nat '(null)'
+dfx canister call day_2 null_or_nat '(null)'
 ("The argument is null")
 ```
 
