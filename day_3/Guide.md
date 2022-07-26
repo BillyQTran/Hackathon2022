@@ -1,7 +1,7 @@
 # Daily guide : day 3 🐥
 
 Welcome into the **day 3** of the Motoko FU Hackathon Training! <br/>
-Today we will cover the following topics : **Custom type**, **Linked list**, **Principal**, **Hashmap**, **Cycles** (how to deal with upgrades), **stable variables**, **Variant types**, **Result type**, **HTTP request** & **Intercanister messages**.
+Today we will cover the following topics : **Custom type**, **Linked list**, **Principal**, **Hashmap**, **Cycles** (how to deal with upgrades), **stable variables**, **Variant types**, **HTTP request** & **Intercanister messages**.
 
 You can access the official documentation for each topic.
 
@@ -443,7 +443,7 @@ actor {
     var my_name : Text = "";
 
     public func change_name(name : Text) : async () {
-        ny_name := name;
+        my_name := name;
     };
 
     public func show_name() : async Text {
@@ -589,45 +589,6 @@ actor {
 ```
 
 You'll notice that one advantage of using variants, is that our switch/case doesn't need to cover the **(\_) case** !
-
-# Result type ✅ / 🚫
-
-The type Result is extremly useful if you want to propagate errors and indicate to other people/developers what went wrong.
-
-The type **Result** is defined as :
-
-```
-type Result<Ok, Err> = {#ok : Ok; #err : Err}
-```
-
-This means the type Result is just a variant with two tags #ok and #err. These two tags can be of type **Ok** and type **Err**.
-
-One common type for **Ok** and **Err** is the following.
-
-```
-type Result<(), Text> = {#ok ; #err : Text};
-```
-
-In case everything went right we just return #ok without additional informations, but if we encounter an error we want to propagate a message in the #err.
-
-```
-import Result "mo:base/Result";
-import Principal "mo:base/Principal";
-actor {
-    public type Result = Result.Result;
-    public shared ({caller}) func register() : async Result<(), Text> {
-        if(Principal.isAnonymous(caller)){
-            return #err("You need to be authenticated to register").
-        } else {
-            // Do something
-            return #ok;
-        }
-    };
-};
-
-```
-
-You could also create a variant type **Error** and use it in the Result.
 
 # HTTP request
 
