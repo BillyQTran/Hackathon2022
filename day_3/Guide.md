@@ -1,7 +1,7 @@
 # Daily guide : day 3 🐥
 
 Welcome into the **day 3** of the Motoko FU Hackathon Training! <br/>
-Today we will cover the following topics : **Custom type**, **Linked list**, **Principal**, **Hashmap**, **Cycles** (how to deal with upgrades), **stable variables**, **Variant types**, **HTTP request** & **Intercanister messages**.
+Today we will cover the following topics : **Custom type**, **Linked list**, **Principal**, **Hashmap**, **Cycles** (how to deal with upgrades), **stable variables**, **Variant types** & **HTTP request**.
 
 You can access the official documentation for each topic.
 
@@ -10,8 +10,6 @@ You can access the official documentation for each topic.
 - <a href="https://internetcomputer.org/docs/language-guide/upgrades.html" target="_blank"> Stable variables & upgrade </a>.
 - <a href="https://internetcomputer.org/docs/developers-guide/concepts/tokens-cycles.html" target="_blank"> Cycles </a>.
 - <a href="https://internetcomputer.org/docs/candid-guide/candid-types.html" target="_blank"> Variant </a>.
-- <a href="https://internetcomputer.org/docs/language-guide/errors.html#_working_with_optionresult" target="_blank"> Result </a>.
-- <a href="https://internetcomputer.org/docs/developers-guide/tutorials/intercanister-calls.html" target="_blank"> Intercanister calls </a>.
 
 # Prerequisites ✅
 
@@ -659,49 +657,4 @@ actor {
 ```
 
 This is how we implement a basic http response for our canister !
-Now if you deploy this canister and access it in your browser, you should see a blank page with the text !
-
-# Intercanister messages 💬 (Bonus)
-
-One of the best thing on the IC is the ability for a canister to call another canister methods just with a few lines of code. 🤯
-
-The first thing you migth want to do is declare the interface of the actor you're gonna interact with.
-
-Let's imagine we have an actor defined somewhere else.
-
-```
-actor Stranger {
-
-  public shared ({caller}) func hello() : async Text {
-      return("I was called by )
-  }
-
-  public shared ({caller}) func another_function_that_does_something() : async () {
-      //Do something
-      return;
-  };
-}
-```
-
-We would define it's interface like this. <br/> (If the actor have severals methods but you only want to call one you don't need to declare all other methods).
-
-```
-let other_canister : actor {
-    hello : () -> async Text;
-} = actor("CANISTER_ID");
-```
-
-You'll notice that you need to specify the canister id of the canister you're trying to call. <br/>
-Then, in our **own** actor we would call if that way.
-
-```
-actor {
-
-    let other_canister : actor { hello : () -> async Text} = actor("CANISTER_ID");
-    public func test() : async Text {
-        return(await other_canister.hello())
-    };
-}
-```
-
-You'll also notice that we need to **await** calls to the other canister.
+Now if you deploy this canister and access it in your browser, you should see a blank page with the text!
